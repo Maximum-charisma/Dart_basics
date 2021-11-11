@@ -50,7 +50,22 @@ void main() {
           .toString());
 
   //Седьмой пункт задания
-  print('Корень в n-ной степени равен: ' + (0.0081.squareRoot(4)).toString());
+  print('Корень в n-ной степени равен: ' + (125.squareRoot(3)).toString());
+
+  //Восьмой пункт задания
+  print('Система почты: ' + AdminUser('q.macks555@gmail.com').getMailSystem());
+
+  UserManager userManager = UserManager();
+
+  userManager.addUser(AdminUser('maxim@gmail.com'));
+  userManager.addUser(GeneralUser('elena@gmail.com'));
+  userManager.addUser(GeneralUser('alex@icloud.com'));
+  userManager.addUser(GeneralUser('yulia@yandex.ru'));
+  userManager.addUser(GeneralUser('masha@mail.com'));
+  userManager.printEmails();
+
+  //Девятый пункт задания
+  
 }
 
 class Convertation {
@@ -206,7 +221,6 @@ extension on num {
 
   num squareRoot(num root) {
     if (root > 0) {
-
       double counter = 1, answer = 0, number = 0.00001;
 
       while (answer < posOrNegNum(this)) {
@@ -226,12 +240,56 @@ extension on num {
         }
       }
       if (answer.round() == round()) {
-      return number;
+        return number;
       } else {
-      throw ArgumentError();
+        throw ArgumentError();
       }
     } else {
       throw ArgumentError();
     }
+  }
+}
+
+class User {
+  final String email;
+
+  User(this.email);
+}
+
+class AdminUser extends User with GetMailSystem {
+  AdminUser(String email) : super(email);
+}
+
+class GeneralUser extends User {
+  GeneralUser(String email) : super(email);
+}
+
+mixin GetMailSystem on User {
+  String getMailSystem() {
+    String system = '';
+    bool isGone = false;
+    return email.split('@')[1];
+  }
+}
+
+class UserManager<T extends User> {
+  List<T> users = [];
+
+  void addUser(T user) {
+    users.add(user);
+  }
+
+  void deleteUser(T user) {
+    users.remove(user);
+  }
+
+  void printEmails() {
+    users.forEach((element) {
+      if (element is GeneralUser) {
+        print('email General User: ' + element.email);
+      } else if (element is AdminUser) {
+        print('email Admin User: ' + AdminUser(element.email).getMailSystem());
+      }
+    });
   }
 }
